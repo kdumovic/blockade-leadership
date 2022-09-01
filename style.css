@@ -1,0 +1,33 @@
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Space+Grotesk"/>
+
+body { 
+  background-color: black;
+}
+
+#canvas-container {
+  width: 100vw;
+  text-align: center;
+  background-color: black;
+  position: relative;
+}
+
+#canvas {
+/*   background-color: black; */
+  z-index: 2;
+}
+
+svg {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  width: 150px;
+  height: 200px;
+  
+  padding-bottom: 200px;
+  padding-left: 20px;
+  
+  z-index: 1;
+  
+  display: none;
+}
+
