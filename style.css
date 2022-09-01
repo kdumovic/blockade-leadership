@@ -1,32 +1,36 @@
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Space+Grotesk"/>
 
-body { 
-  background-color: black;
+body {
+  margin: 0;
 }
 
 #canvas-container {
   width: 100vw;
+  height: 100vh;
   text-align: center;
   background-color: black;
   position: relative;
 }
 
-#canvas {
-/*   background-color: black; */
-  z-index: 2;
+.blockade-title {
+  position: absolute;
+  width: 230px;
+  height: 120px;
+  top: 50px;
+  left: 50px;
+  font: 24px Space Grotesk;
+  font-weight: 500;
+  text-align: left;
+  color: white;
 }
 
-svg {
-  margin: auto;
+.blockade-logo-sans-text {
+  width: 30%;
+}
+
+.ld-logo {
   position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  width: 150px;
-  height: 200px;
-  
-  padding-bottom: 200px;
-  padding-left: 20px;
-  
-  z-index: 1;
-  
-  display: none;
+  right: 25px;
+  bottom: 25px;
+  width: 220px;
 }

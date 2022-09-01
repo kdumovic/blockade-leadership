@@ -13,10 +13,10 @@ var selectedPointName = 'Marguerite';
 
 const teamNames = [
   'Marguerite',
+  'Diego',
   'Ben',
   'Kyle',
   'Garrett',
-  'Diego',
   'Charles'
 ];
 
@@ -25,23 +25,23 @@ const a = 2 * Math.PI / teamNames.length;
 const connectionText = {
   'Marguerite': {
     'Marguerite': null,
-    'Ben': 'Communication on technical feasibility',
-    'Kyle': 'Operations partner, bring company vision to life',
+    'Ben': 'Translate business requirements into product roadmap',
+    'Kyle': 'Operations counterpart, biz dev partner, co-execute company vision',
     'Garrett': 'Co-creating AND creative vision (thought partners)',
     'Diego': 'Artistic brainstorming',
     'Charles': 'Fundraising & Budget review',
   },
   'Ben': {
-    'Marguerite': 'Communication on technical feasibility',
+    'Marguerite': 'Translate business requirements into product roadmap',
     'Ben': null,
-    'Kyle': 'Outline goals & functions of ND MVP',
-    'Garrett': 'Open communication line for eng & creative needs',
+    'Kyle': 'Product goals, roadmap & ND MVP reqs',
+    'Garrett': 'Develop engineering action items around creative vision',
     'Diego': null,
     'Charles': 'Offboard & organize Blockade\'s financial backlog',
   },
   'Kyle': {
-    'Marguerite': 'Operations partner, bring company vision to life',
-    'Ben': 'Outline goals & functions of ND MVP',
+    'Marguerite': 'Operations counterpart, biz dev partner, co-execute company vision',
+    'Ben': 'Product goals, roadmap & ND MVP reqs',
     'Kyle': null,
     'Garrett': 'Creative process + product collab',
     'Diego': 'Artistic process management',
@@ -49,11 +49,11 @@ const connectionText = {
   },
   'Garrett': {
     'Marguerite': 'Co-creating AND creative vision (thought partners)',
-    'Ben': 'Open communication line for eng & creative needs',
+    'Ben': 'Develop engineering action items around creative vision',
     'Kyle': 'Creative process + product collab',
     'Garrett': null,
     'Diego': 'Creative direction + art team management',
-    'Charles': 'Onboarding to investor & fundraising process',
+    'Charles': null,
   },
   'Diego': {
     'Marguerite': 'Artistic brainstorming',
@@ -67,7 +67,7 @@ const connectionText = {
     'Marguerite': 'Fundraising & Budget review',
     'Ben': 'Offboard & organize Blockade\'s financial backlog',
     'Kyle': 'Operations & process partner, delegate overlapping responsibilities',
-    'Garrett': 'Onboarding to investor & fundraising process',
+    'Garrett': null,
     'Diego': null,
     'Charles': null,
   },
