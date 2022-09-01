@@ -20,7 +20,14 @@ const teamNames = [
   'Charles'
 ];
 
-const a = 2 * Math.PI / teamNames.length;
+const teamNamesToGDocsUrl = {
+  'Marguerite': 'https://docs.google.com/document/d/1pZGEJ7EXhw2hQna9AU5IkVoHtRhjgYIiFk7NHBurl-E',
+  'Diego': 'https://docs.google.com/document/d/1q-8UuLGodUCtlKqqzbpeK1L5I_OeOfqWhz23Zw2pKm4',
+  'Ben': 'https://docs.google.com/document/d/1DsF5sBvg58fTDU6JzEUPl7UagoFWJ2cfSFOC79JLwxo',
+  'Kyle': 'https://docs.google.com/document/d/1Clunu6zmR6D-eyT-NMvvzfxOoPq9q9bb8CrzPImFW0c/',
+  'Garrett': 'https://docs.google.com/document/d/1VQ_34_4rwJbO9ARale5uJYaNPW8ii6d7FsecsJ222Vs',
+  'Charles': 'https://docs.google.com/document/d/1vVhbnKMYY7V-iZo6BSad9TuWThJFShsrw039-pW4luU',
+};
 
 const connectionText = {
   'Marguerite': {
@@ -78,20 +85,22 @@ var pointNameToConnections = {};
 
 var Point = function(id, x, y, r, fillColor, strokeColor) {
   this.id = id;
-  this.x= x;
-  this.y= y;
+  this.x = x;
+  this.y = y;
   this.r = r;
+  this.width = r;
+  this.height = r/2.5;
   this.fillColor = fillColor || '#000';
   this.strokeColor = strokeColor || '#404040';
   this.selected = false;
+  this.underCursor = false;
 }
 
 Point.prototype.draw = function(ctx) {
   ctx.beginPath();
-  //ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
-  var rectWidth = this.r;
-  var rectHeight = this.r/2.5;
-  ctx.rect(this.x - rectWidth/2, this.y - rectHeight/2, rectWidth, rectHeight);
+  // ctx.arc(this.x, this.y, 6, 0, 2 * Math.PI, false);
+  ctx.rect(this.x - this.width/2, this.y - this.height/2, this.width, this.height);
+
   ctx.fillStyle = this.fillColor;
   ctx.lineWidth = 2;
   ctx.strokeStyle = this.strokeColor;
@@ -99,6 +108,10 @@ Point.prototype.draw = function(ctx) {
   if (this.selected) {
     ctx.strokeStyle = '#fff';
     ctx.fillStyle = '#fff';
+  }
+  if (this.underCursor) {
+    ctx.strokeStyle = '#20c895';
+    ctx.fillStyle = '#20c895';
   }
   ctx.fill();
   ctx.stroke();
@@ -183,11 +196,13 @@ Connection.prototype.draw = function(ctx) {
 }
 
 function initializePoints() {
-  var initX = HEX_RADIUS;
-  var initY = HEX_RADIUS;
+  const a = 2 * Math.PI / teamNames.length;
+  var x = HEX_RADIUS;
+  var y = HEX_RADIUS;
+  var size = HEX_RADIUS;
   for (var i = 0; i < teamNames.length; i++) {
-    var xCoord = initX + initX * Math.cos(a * i);
-    var yCoord = initY + initY * Math.sin(a * i);
+    var xCoord = x + size * Math.cos(i * a);
+    var yCoord = y + size * Math.sin(i * a);
     var point = new Point(teamNames[i], xCoord, yCoord, POINT_RADIUS);
     points[teamNames[i]] = point;
   }
@@ -242,6 +257,7 @@ function drawSelected() {
 function resetSelected() {
   for (var key in points) {
     points[key].selected = false;
+    points[key].underCursor = false;
     var connectionsFromPoint = pointNameToConnections[key];
     for (var i = 0; i < connectionsFromPoint.length; i++) {
       var connection = connectionsFromPoint[i];
@@ -256,10 +272,37 @@ function draw() {
   drawPoints();
 }
 
+function coordsInBoundsOfPoint(x, y) { // return name if true, otherwise false
+  for (var key in points) { // iterate over each point
+    var point = points[key];
+    let dx = point.width/2;
+    let dy = point.height/2;
+    if ((x > point.x+100-dx) && (x < point.x+100+dx) && (y > point.y-dy) && (y < point.y+dy)) { //+100 because of a weird off by 100px error...
+      return point.id;
+    }
+  }
+  return false;
+}
+
+function openInNewTab(url) {
+ window.open(url, '_blank').focus();
+}
+
+document.addEventListener('click', function(e) {
+  const rect = canvas.getBoundingClientRect()
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  var nameUnderCursor = coordsInBoundsOfPoint(mouseX, mouseY);
+  if (nameUnderCursor) {
+    openInNewTab(teamNamesToGDocsUrl[nameUnderCursor]);
+  }
+});
+
 document.addEventListener('mousemove', function(e) {
   const rect = canvas.getBoundingClientRect()
-  const mouseX = event.clientX - rect.left;
-  const mouseY = event.clientY - rect.top;
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
   //console.log("x: " + mouseX + " y: " + mouseY);
   //console.log(e.pageX, e.pageY);
   
@@ -277,7 +320,13 @@ document.addEventListener('mousemove', function(e) {
   }
   
   resetSelected();
+  document.body.style.cursor = 'default';
   closestPoint.selected = true;
+  var nameUnderCursor = coordsInBoundsOfPoint(mouseX, mouseY);
+  if (nameUnderCursor) {
+    points[nameUnderCursor].underCursor = true;
+    document.body.style.cursor = 'pointer';
+  }
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   draw();
